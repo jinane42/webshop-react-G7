@@ -1,0 +1,12 @@
+img{ 
+    width: 200px
+}
+li{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.mainContainer{
+    padding: 0 20px;
+}
