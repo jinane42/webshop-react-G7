@@ -6,14 +6,20 @@ import Cart from './Cart'
 import About from './About'
 import Services from './Services'
 import Contact from './Contact'
-import Dashboard from './Dashboard/Dashboard';
-import Preferences from './Preferences/Preferences';
+import Dashboard from './Dashboard';
+import Preferences from './Preferences';
+import Login from './Login';
+import useToken from './useToken';
 
 function App() {
 
   const [cart, updateCart] = useState([])
+  const { token, setToken } = useToken();
 
-  return (
+ 
+  return token ? (
+    <Login setToken={setToken} />
+  ) : (
     <div className="App">
       
       <Router>

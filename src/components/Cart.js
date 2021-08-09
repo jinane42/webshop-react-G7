@@ -1,19 +1,21 @@
-import {useEffect } from 'react'
+import { useEffect } from 'react'
 
 function Cart({ cart, updateCart }) {
+    
     const total = cart.reduce(
         (acc, itemType) => acc + itemType.amount * itemType.price,
         0
     )
     const LOCAL_STORAGE_KEY = 'G7.cart'
+   
 
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
         if (cart) updateCart(cart)
-      }, [])
-      useEffect(() => {
+    }, [])
+    useEffect(() => {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cart))
-      }, [cart])
+    }, [cart])
 
     return (
         <div>
@@ -27,7 +29,7 @@ function Cart({ cart, updateCart }) {
             <h3>Total : {total}€</h3>
             <button onClick={() => updateCart(0)}> Vider le panier</button>
         </div>
-    ) 
+    )
 }
 
 export default Cart
