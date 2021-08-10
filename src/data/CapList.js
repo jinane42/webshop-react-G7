@@ -1,32 +1,40 @@
-import cap from '../assets/cap.webp'
+import { useState, useEffect } from 'react';
 
-export const CapList = [
-	{
-        name: 'astro',
-		category: 'classique',
-		id: '1',
-		cover: cap,
-		price: 15
-    },
-    {
-        name: 'star',
-		category: 'classique',
-		id: '2',
-		cover: cap,
-		price: 15
-    },
-    {
-        name: 'planet',
-		category: 'classique',
-		id: '3',
-		cover: cap,
-		price: 15
-    },
-    {
-        name: 'earth',
-		category: 'classique',
-		id: '4',
-		cover: cap,
-		price: 15
-    },
-]
+function CapList() {
+	const [products, setProducts] = useState(null);
+
+	useEffect(() => {
+		getData()
+
+
+		// we will use async/await to fetch this data
+		async function getData() {
+			const res = await fetch("https://webshop-api-johnsons.herokuapp.com/api/products/");
+			const data = await res.json();
+
+			// store the data into our books variable
+			setProducts(data);
+		}
+	}, [])
+	return (
+		<div>
+			<h1>Products</h1>
+
+			{/* display products from the API */}
+			{products && (
+				<div >
+
+					{/* loop over the products */}
+					{products.map((id, title) => (
+						<div key={id}>
+							<h2>{title}</h2>
+						</div>
+					))}
+
+				</div>
+			)}
+		</div>
+	)
+}
+
+export default CapList

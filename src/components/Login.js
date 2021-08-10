@@ -1,54 +1,52 @@
-import React , { useState } from 'react';
-import PropTypes from 'prop-types';
-import App from 'App.js';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { setUserSession } from './Common';
 
-async function loginUser(credentials) {
-    return fetch('http://localhost:8080/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
+function Login(props) {
+    const [loading, setLoading] = useState(false);
+    const username = useFormInput('');
+    const password = useFormInput('');
+    const [error, setError] = useState(null);
+   
+    // handle button click of login form
+    const handleLogin = () => {
+      setError(null);
+      setLoading(true);
+      axios.post('https://webshop-api-johnsons.herokuapp.com/api/profiles/', { username: username.value, password: password.value })
+      .then(response => {
+      setLoading(false);
+      setUserSession(response.data.token, response.data.user);
+      props.history.push('/dashboard');
     })
-      .then(data => data.json())
-}
-
-export default function Login({ setToken }) {
-    const [username, setUserName] = useState();
-    const [password, setPassword] = useState();
-
-    const handleSubmit = async e => {
-      e.preventDefault();
-      const token = await loginUser({
-        username,
-        password
-      });
-      setToken(token)
-      return (
-        <App/>
-      )
-    }
-
-  return(
-    <div className="login-wrapper">
-    <h1>Please Log In</h1>
-    <form onSubmit={handleSubmit}>
-      <label>
-        <p>Username</p>
-        <input type="text" onChange={e => setUserName(e.target.value)}/>
-      </label>
-      <label>
-        <p>Password</p>
-        <input type="password" onChange={e => setPassword(e.target.value)}/>
-      </label>
-      <div>
-        <button type="submit" >Submit</button>
-      </div>
-    </form>
-    </div>
-  )
-}
-
-Login.propTypes = {
-    setToken: PropTypes.func.isRequired
   }
+   
+    return (
+      <div>
+        Login<br /><br />
+        <div>
+          Username<br />
+          <input type="text" {...username} autoComplete="new-password" />
+        </div>
+        <div style={{ marginTop: 10 }}>
+          Password<br />
+          <input type="password" {...password} autoComplete="new-password" />
+        </div>
+        {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
+        <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
+      </div>
+    );
+  }
+   
+  const useFormInput = initialValue => {
+    const [value, setValue] = useState(initialValue);
+   
+    const handleChange = e => {
+      setValue(e.target.value);
+    }
+    return {
+      value,
+      onChange: handleChange
+    }
+  }
+   
+  export default Login;

@@ -1,4 +1,4 @@
-import { CapList } from '../data/CapList'
+import CapList from '../data/CapList'
 import Item from './Item'
 import '../style/Shop.css'
 
@@ -21,17 +21,7 @@ function Shop({ cart, updateCart }) {
 
     return (
         <ul className="itemContainer">
-             {CapList.map(({ id, cover, name, price }) =>  (
-                <div key={id} >
-                    <Item 
-                        cover={cover}
-                        name={name}
-                        price={price}
-                    />
-                    <button onClick={() => addToCart(name, price)}>Ajouter</button>
-                </div>
-            ) 
-            )}
+            <CapList/>
            
         </ul>
     )
