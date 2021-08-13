@@ -1,11 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import Login from './Login'
 
 const Logout = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (localStorage.getItem('token') == null) {
-      window.location.replace('http://localhost:3000/login');
+      window.location.replace(< Login />);
     } else {
       setLoading(false);
     }
@@ -25,7 +26,7 @@ const Logout = () => {
       .then(data => {
         console.log(data);
         localStorage.clear();
-        window.location.replace('http://localhost:3000/login');
+        window.location.replace(<Login />);
       });
   };
 

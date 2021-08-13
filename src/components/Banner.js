@@ -12,26 +12,29 @@ function Banner() {
 
     useEffect(() => {
         if (localStorage.getItem('token') !== null) {
-            setIsAuth(false);
+            setIsAuth(true);
         }
     }, []);
 
     return (
         <div className='mainContainer'>
-            <h1 className='bannerTitle'>G7</h1>
+            <Link to="/shop">
+               <h1 className='bannerTitle'>G7</h1> 
+            </Link>
+            
             <nav className="style-3">
                 <ul className="menu-3">
                     {isAuth === true ? (
                         <Fragment>
-                            <Link to="/shop"><li className='black'>Home</li></Link>
+                            <Link to="/shop"><li className='black' >Shop</li></Link>
                             <Link to="/Logout"><li className='black'>Logout</li></Link>
-                            <Link to="/dashboard"><li className='black'>Dashboard</li></Link>
+                            <Link to="/Dashboard"><li className='black'>Dashboard</li></Link>
                             <Link to="/contact"><li className='black'>Contact</li></Link>
                         </Fragment>
 
                     ) : (
                         <Fragment>
-                            <Link to="/shop"><li className='black'>Home</li></Link>
+                            <Link to="/shop"><li className='black' >Shop</li></Link>
                             <Link to="/Login"><li className='black'>Login</li></Link>
                             <Link to="/Signup"><li className='black'>Signup</li></Link>
                             <Link to="/contact"><li className='black'>Contact</li></Link>

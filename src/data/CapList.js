@@ -52,7 +52,7 @@ function CapList({ cart, updateCart }) {
 					{/* loop over the products */}
 					{products.map(product => (
 						<div className='item'>
-							<img url={product.imageurl}></img>
+							<img className='productImg' src={product.imageurl} alt='product'></img>
 							<h2 >{product.title}</h2>
 							<h3> Price : {product.price}€</h3>
 							<button onClick={() => addToCart()}>Add to cart</button>

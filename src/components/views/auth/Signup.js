@@ -15,7 +15,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (localStorage.getItem('token') !== null) {
-      window.location.replace({Dashboard});
+      window.location.replace(<Dashboard />);
     } else {
       setLoading(false);
     }
@@ -46,7 +46,7 @@ const Signup = () => {
         if (data.key) {
           localStorage.clear();
           localStorage.setItem('token', data.key);
-          window.location.replace('http://localhost:3000/dashboard');
+          window.location.replace(< Dashboard />);
         } else {
           setUsername('');
           setEmail('');

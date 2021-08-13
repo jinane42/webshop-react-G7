@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Dashboard from '../../Dashboard';
 
 const Login = () => {
@@ -10,7 +9,7 @@ const Login = () => {
 
   useEffect(() => {
     if (localStorage.getItem('token') !== null) {
-      window.location.replace('http://localhost:3000/dashboard');
+      window.location.replace(< Dashboard />);
     } else {
       setLoading(false);
     }
@@ -37,12 +36,7 @@ const Login = () => {
         if (data.key) {
           localStorage.clear();
           localStorage.setItem('token', data.key);
-          return(
-            <Router>
-            <Dashboard />
-          </Router>
-          )
-        //   window.location.replace('http://localhost:3000/dashboard');
+          window.location.replace(< Dashboard />);
         } else {
           setUsername('');
           setPassword('');
