@@ -1,4 +1,11 @@
 .itemContainer{
     display: flex;
-    padding: 20px 100px;
+    flex-direction: row;
+}
+.item{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 10px;
+    border: gray solid 1px;
 }
