@@ -26,6 +26,7 @@ function CapList({ cart, updateCart }) {
 		}
 	}, [])
 
+	
 	function addToCart(title, price) {
 		const currentItemAdded = cart.find((item) => item.title === title)
 		if (currentItemAdded) {
