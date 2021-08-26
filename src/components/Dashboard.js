@@ -36,13 +36,6 @@ const Dashboard = () => {
   const onSubmit = e => {
     e.preventDefault();
 
-    const user = {
-      username: username,
-      email: email,
-      first_name: first_name,
-      last_name: last_name,
-      phone_number: phone_number
-    };
   }
     return (
       <div>

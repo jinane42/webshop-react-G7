@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
 import Categories from '../components/Categories'
 
-function CapList({ cart, updateCart }) {
-	const [products, setProducts] = useState(null);
-
-	const [activeCategory, setActiveCategory] = useState('')
+function Products({ cart, updateCart }) {
 	
-	
+	const [products, setProducts] = useState([])
 	useEffect(() => {
 		getData()
 		// we will use async/await to fetch this data
@@ -18,52 +15,57 @@ function CapList({ cart, updateCart }) {
 			setProducts(data);
 			console.log(data)
 
-			const categories = data.reduce(
-		(acc, data) =>
-			acc.includes(data.category) ? acc : acc.concat(data.category),
-		[]
-	)
 		}
 	}, [])
 
-	
+	const [activeCategory, setActiveCategory] = useState('')
+
+	const categories = products.reduce(
+		(acc, product) =>
+			acc.includes(product.category) ? acc : acc.concat(product.category),
+		[]
+	)
+
 	function addToCart(title, price) {
-		const currentItemAdded = cart.find((item) => item.title === title)
-		if (currentItemAdded) {
+		console.log('hello')
+		const currentproductAdded = cart.find((product) => product.title === title)
+		if (currentproductAdded) {
 			const cartFiltered = cart.filter(
-				(item) => item.title !== title
+				(product) => product.title !== title
 			)
 			updateCart([
 				...cartFiltered,
-				{ title, price, amount: currentItemAdded.amount + 1 }
+				{ title, price, amount: currentproductAdded.amount + 1 }
 			])
 		} else {
 			updateCart([...cart, { title, price, amount: 1 }])
 		}
+		console.log(currentproductAdded)
 	}
 
 	return (
 		<div>
+			<Categories
+				categories={categories}
+				setActiveCategory={setActiveCategory}
+				activeCategory={activeCategory}
+			/>
 			<h1>Products</h1>
-			
-			{/* display products from the API */}
-			{products && (
-				<div className='itemContainer'>
-
-					{/* loop over the products */}
-					{products.map(product => (
-						<div className='item'>
-							<img className='productImg' src={product.imageurl} alt='product'></img>
-							<h2 >{product.title}</h2>
-							<h3> Price : {product.price}€</h3>
-							<button onClick={() => addToCart()}>Add to cart</button>
+			<ul className="itemContainer">
+				{products.map(({ id, imageurl, title, price, category }) =>
+					!activeCategory || activeCategory === category ? (
+						<div key={id}>
+							<img className='productImg' src={imageurl} alt='product'></img>
+							<h2 >{title}</h2>
+							<h3> Price : {price}€</h3>
+							<button onClick={() => addToCart(title, price)}>Add to cart</button>
 						</div>
-					))}
+					) : null
+				)}
+			</ul>
 
-				</div>
-			)}
 		</div>
 	)
 }
 
-export default CapList
+export default Products
