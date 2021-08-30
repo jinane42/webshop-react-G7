@@ -15,6 +15,8 @@ function Banner() {
             setIsAuth(true);
         }
     }, []);
+    const savedCart = localStorage.getItem("cart");
+    const [cart, updateCart] = useState(savedCart ? JSON.parse(savedCart) : []);
 
     return (
         <div className='mainContainer'>
@@ -30,6 +32,7 @@ function Banner() {
                             <Link to="/Logout"><li className='black'>Logout</li></Link>
                             <Link to="/Dashboard"><li className='black'>Dashboard</li></Link>
                             <Link to="/contact"><li className='black'>Contact</li></Link>
+                           
                         </Fragment>
 
                     ) : (
@@ -38,16 +41,11 @@ function Banner() {
                             <Link to="/Login"><li className='black'>Login</li></Link>
                             <Link to="/Signup"><li className='black'>Signup</li></Link>
                             <Link to="/contact"><li className='black'>Contact</li></Link>
+                            
                         </Fragment>
                     )}
                 </ul>
             </nav>
-            <Link to="/cart">
-                <button className="Cart" >
-                    {cartIcon}
-                </button>
-            </Link>
-
         </div>
     )
 }

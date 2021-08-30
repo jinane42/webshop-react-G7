@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Categories from '../components/Categories'
 
 function Products({ cart, updateCart }) {
-	
+
 	const [products, setProducts] = useState([])
 	useEffect(() => {
 		getData()
@@ -26,8 +26,9 @@ function Products({ cart, updateCart }) {
 		[]
 	)
 
-	function addToCart(title, price) {
-		console.log('hello')
+	function addToCart(title, price, imageurl, amount) {
+
+		console.log('addToCart')
 		const currentproductAdded = cart.find((product) => product.title === title)
 		if (currentproductAdded) {
 			const cartFiltered = cart.filter(
@@ -35,37 +36,38 @@ function Products({ cart, updateCart }) {
 			)
 			updateCart([
 				...cartFiltered,
-				{ title, price, amount: currentproductAdded.amount + 1 }
+				{ imageurl, title, price, amount: currentproductAdded.amount + 1 }
 			])
 		} else {
-			updateCart([...cart, { title, price, amount: 1 }])
+			updateCart([...cart, { imageurl, title, price, amount: 1 }])
 		}
-		console.log(currentproductAdded)
-	}
-
-	return (
-		<div>
-			<Categories
-				categories={categories}
-				setActiveCategory={setActiveCategory}
-				activeCategory={activeCategory}
-			/>
-			<h1>Products</h1>
-			<ul className="itemContainer">
-				{products.map(({ id, imageurl, title, price, category }) =>
-					!activeCategory || activeCategory === category ? (
-						<div key={id}>
-							<img className='productImg' src={imageurl} alt='product'></img>
-							<h2 >{title}</h2>
-							<h3> Price : {price}€</h3>
-							<button onClick={() => addToCart(title, price)}>Add to cart</button>
-						</div>
-					) : null
-				)}
-			</ul>
-
-		</div>
-	)
+	
 }
+
+		return (
+			<div>
+				<Categories
+					categories={categories}
+					setActiveCategory={setActiveCategory}
+					activeCategory={activeCategory}
+				/>
+				<h1>Products</h1>
+				<ul className="itemContainer">
+					{products.map(({ id, imageurl, title, price, category, amount }) =>
+						!activeCategory || activeCategory === category ? (
+							<div className='item' key={id}>
+								<h2 >{title}</h2>
+								<img className='productImg' src={imageurl} alt='product'></img>
+								<p>{category}</p>
+								<h3> Price : {price}€</h3>
+								<button onClick={() => addToCart(title, price, imageurl)}>Add to cart</button>
+							</div>
+						) : null
+					)}
+				</ul>
+
+			</div>
+		)
+	}
 
 export default Products

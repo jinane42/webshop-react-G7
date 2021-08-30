@@ -1,13 +1,28 @@
 import { useState, useEffect } from 'react';
 import Products from '../data/Products';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faMinusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+
 
 function Cart({ cart, updateCart }) {
-    const [isOpen, setIsOpen] = useState(false)
-    const [products, setProducts] = useState([]);
-    const [order_items, setOrder_items] = useState('');
-    const [owner, setOwner] = useState('');
-    const [is_ordered, setIs_ordered] = useState('');
-    console.log(cart)
+
+    const plus = <FontAwesomeIcon icon={faPlusCircle} />
+    const minus = <FontAwesomeIcon icon={faMinusCircle} />
+    const trash = <FontAwesomeIcon icon={faTrashAlt} />
+
+    const [isOpen, setIsOpen] = useState(true)
+    const [product, setProduct] = useState('product');
+    const [amount, setAmount] = useState(0);
+   
+    const closeCart = () => {
+        setIsOpen(false)
+    }
+
+    const openCart =() => {
+        setIsOpen(true)
+    }
 
     const total = cart.reduce(
         (acc, products) => acc + products.amount * products.price,
@@ -23,14 +38,7 @@ function Cart({ cart, updateCart }) {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cart))
     }, [cart])
 
-    const order = {
-        owner: owner,
-        order_items: order_items,
-        is_ordered: is_ordered
-    };
-
     function increase() {
-
 
     }
     function decrease() {
@@ -39,54 +47,63 @@ function Cart({ cart, updateCart }) {
     function remove() {
 
     }
+    const order = {
+        product: product,
+        quantity: amount,
+    }
+    function toOrder() {
+        console.log(order)
+
+        fetch('https://webshop-api-johnsons.herokuapp.com/api/orderitems/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(order.amount)
+                setProduct(order);
+                setAmount(order)
+            })
+    }
 
     return isOpen ? (
         <div className='cart'>
             <h1>Cart</h1>
-            <ul className='itemContainer'>
+            <ul className='cartContainer'>
                 {cart.map(({ title, price, amount, imageurl }, index) => (
-                    <div className='item'>
+                    <div className='cartItem'>
                         <img className='productImg' src={imageurl} alt='product'></img>
-                        <div key={`${title}-${index}`} >
+                        <div className='title' key={`${title}-${index}`} >
                             {title} {price}€ x {amount}
                         </div>
-                        <div>
-                            <button onClick={() => increase(cart)}>
-                                +
-                            </button>
-
-                            {
-                                cart.amount > 1 &&
-                                <button onClick={() => decrease(cart)}>
-                                    -
-                                </button>
-                            }
-
-                            {
-                                cart.amount === 1 &&
-                                <button onClick={() => remove(cart)}>
-                                    Trash
-                                </button>
-                            }
+                        <div className='btnCart'>
+                            <p className='plus' onClick={() => increase(cart)}>{plus}</p>
+                            <p className='minus' onClick={() => decrease(cart)}>{minus}</p>
+                            <p className='trash' onClick={() => remove(cart)}>{trash}</p>
                         </div>
 
                     </div>
                 ))}
             </ul>
-            <button onClick={() => updateCart(0)}> Vider le panier</button>
-            <button
-                className='lmj-cart-toggle-button'
-                onClick={() => setIsOpen(false)}>
-                Fermer le panier
-            </button>
             <h3>Total :{total}€</h3>
+            <button onClick={() => updateCart(0)}> CLEAR </button>
+            <button
+                onClick={() => closeCart()}>
+                Close the cart
+            </button>
+            <button
+                onClick={() => toOrder()}>
+                Confirm your order
+            </button>
         </div>
     ) : (
-        <div className='lmj-cart-closed'>
+        <div>
             <button
-                className='lmj-cart-toggle-button'
-                onClick={() => setIsOpen(true)}>
-                Ouvrir le panier
+                onClick={() => openCart()}>
+                Open the cart
             </button>
         </div>
     )
